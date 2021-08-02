@@ -34,8 +34,8 @@
         width="100%"
         :before-close="handleClose">
 
-      <span v-text="dialog.content"></span>
-
+<!--      <span v-text="dialog.content"></span>-->
+      <article class="context" v-html="dialog.content"></article>
 
     </el-dialog>
   </div>
@@ -44,15 +44,32 @@
 
 <script>
 
+import request from "@/utils/requests";
+import marked from "marked";
+
+
 export default {
   name: "index",
+  mounted: function () {
+    this.getNews();
+  },
   methods: {
+    getNews(){
+      request.get('/api/news').then(res => {
+        if (res.code === 1){
+          this.tableData = res.data;
+
+        }else{
+          this.tableData = [];
+        }
+      })
+    },
     handleOpen(index, row) {
       console.log(index);
       this.show = true;
       this.dialog.show = true;
       this.dialog.title = row.title;
-      this.dialog.content = this.tableData[index].content;
+      this.dialog.content = marked(this.tableData[index].content, { sanitize: true, breaks: true, smartypants: true });
       this.dialog.create_time = row.create_time;
     },
     handleClose(){
@@ -63,6 +80,7 @@ export default {
   },
   data() {
     return {
+      articleDetail: [],
       show: false,
       dialog: {
         show: false,
@@ -71,22 +89,11 @@ export default {
         create_time: ''
       },
       search: '',
-      tableData: [{
-        id: 1,
-        create_time: '2016-05-03',
-        title: '王小虎',
-        content: '内容'
-      },
-      {
-        id: 2,
-        create_time: '2016-05-06',
-        title: '啊实打实的',
-        content: '啊实打实的啊实打实大大'
-      },
-      ],
+      tableData: [],
 
     }
-  }
+  },
+
 }
 </script>
 
