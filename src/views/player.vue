@@ -16,12 +16,12 @@
           :data="tableData"
           style="width: 100%"
           :row-class-name="tableRowClassName">
-<!--          row-class-name="success-row"-->
-<!--        <el-table-column-->
-<!--            prop="date"-->
-<!--            label="日期"-->
-<!--            style="width: 60px">-->
-<!--        </el-table-column>-->
+        <!--          row-class-name="success-row"-->
+        <!--        <el-table-column-->
+        <!--            prop="date"-->
+        <!--            label="日期"-->
+        <!--            style="width: 60px">-->
+        <!--        </el-table-column>-->
         <el-table-column
             prop="name"
             label="姓名"
