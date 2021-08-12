@@ -22,7 +22,7 @@
 <!--    已经登录的报名区域-->
     <el-button style="margin-left: 220px" @click="loginout" round>退出登录</el-button>
 <!--      <el-descriptions title="当前信息" :column="3" border>-->
-      <el-descriptions title="当前信息" direction="vertical" :column="3" border>
+      <el-descriptions :title="userinform.name" direction="vertical" :column="3" border>
         <el-descriptions-item label="ID" v-model="userinform" align="center">{{ userinform.uid }}</el-descriptions-item>
 <!--        <el-descriptions-item label="ID" label-align="right" align="center" v-model="userinform"></el-descriptions-item>-->
         <el-descriptions-item label="学号" v-model="userinform" align="center">{{ userinform.uname }}</el-descriptions-item>
@@ -49,7 +49,7 @@
           </el-option>
         </el-select>
 
-        <el-button @click="loginout" round>报名</el-button>
+        <el-button @click="enroll" round>报名</el-button>
 
       </el-form-item>
 
@@ -96,7 +96,26 @@ import requests from "@/utils/requests";
 export default {
   name: "Register",
   methods: {
+    enroll(){
+      this.enrollform.username = this.userinform.uname;
+      this.enrollform.password = this.userinform.pwd;
+      if(this.enrollform.gameId === '' || this.enrollform.username === '' || this.enrollform.password === ''){
+        alert('请填写完整信息！');
+        return;
+      }else {
+        requests.post('/api/enroll', this.enrollform).then(res => {
+          if (res.code === 1){
+          //  报名成功
+            alert(res.data.msg);
+            this.getGames();
+          }else {
+            alert(res.msg);
+          }
+        })
+      }
+    },
     getEnrollGames(){
+      //获取所有比赛
       var that = this;
       this.enrollsGames = [];
       requests.get('/api/games').then(res => {
@@ -111,7 +130,10 @@ export default {
           }else{
             res.data[i].name = '【未知】' + res.data[i].name;
           }
-          that.enrollsGames.push(res.data[i])
+          if (res.data[i].gender == that.userinform.gender){
+            that.enrollsGames.push(res.data[i]);
+          }
+
         }
 
         // that.enrollsGames = res.data;
@@ -120,6 +142,7 @@ export default {
     },
 
     getGames(){
+      //获取用户报名的比赛
       var that = this;
       if (this.datafrom.username != ''){
 
@@ -141,6 +164,8 @@ export default {
           that.userinform.uname = res.data.uname;
           that.userinform.pwd = res.data.pwd;
           that.userinform.uid = res.data.uid;
+          that.userinform.name = res.data.name;
+          that.userinform.gender = res.data.gender;
           that.islogin = true;
           that.register = false;
           console.log(that.userinform.uname);
@@ -201,6 +226,8 @@ export default {
         uname: '',
         pwd: '',
         uid: '',
+        name: '',
+        gender: '',
         game: []
       },
       datafrom: {
