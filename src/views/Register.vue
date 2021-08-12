@@ -118,6 +118,7 @@ export default {
 
       });
     },
+
     getGames(){
       var that = this;
       if (this.datafrom.username != ''){
@@ -135,7 +136,7 @@ export default {
       }
       const that = this;
       requests.post('/api/login', this.datafrom).then(res => {
-        if(res.code == 1){
+        if(res.code === 1){
           console.log("登录成功")
           that.userinform.uname = res.data.uname;
           that.userinform.pwd = res.data.pwd;
@@ -159,9 +160,22 @@ export default {
     },
     registe(){
       this.register = true;
-      alert("注册成功！");
       console.log("点击注册")
-      this.tologin();
+
+      requests.post('/api/register', this.registerform).then(res => {
+        if (res.code === 1){
+          console.log(res.msg);
+          alert("注册成功！");
+          this.tologin();
+        }else {
+          console.log(res.msg);
+          alert(res.data);
+          return ;
+        }
+      })
+
+
+
     },
     tologin(){
       this.nowtitle = '欢迎登录',
