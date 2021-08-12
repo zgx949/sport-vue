@@ -30,8 +30,8 @@
             <games />
           </el-tab-pane>
 
-          <el-tab-pane label="登录" name="login">
-            登录
+          <el-tab-pane label="登录报名" name="login">
+            <Register />
           </el-tab-pane>
 
           <el-tab-pane label="投诉" name="complaint">
@@ -59,11 +59,12 @@ import Complaint from "@/views/complaint";
 import Index from "@/views";
 import Games from "@/views/games";
 import Player from "@/views/player";
+import Register from "@/views/Register";
 
 
 
 export default {
-  components: {Games, Index, Complaint, Player},
+  components: {Register, Games, Index, Complaint, Player},
   data() {
     return {
       activeName: 'index',

@@ -9,7 +9,7 @@
           style="width: 360px; margin-bottom: 20px">
       </el-alert>
       <el-input v-model="search" placeholder="请输入学号" style="width: 200px;margin-left: 10px" @keyup.enter="searchID"></el-input>
-      <el-button @click="searchID" style="width: 80px;margin-left: 10px;">搜索</el-button>
+      <el-button @click="searchID" style="width: 80px;margin-left: 10px;" round>搜索</el-button>
     </div>
     <div v-show="isShow" style="margin-left: 10px; margin-right: 10px">
       <el-table
